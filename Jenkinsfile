@@ -19,7 +19,7 @@ pipeline {
                 script {
                     sh 'echo starts Build'
                     // Build Docker image
-                    sh 'Docker build -t weather-app:${params.IMAGE_VERSION} .'
+                    sh 'Docker build -t weather-app:${IMAGE_VERSION} .'
                     // docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
                     //     def customImage = docker.build("my-docker-image:${env.BUILD_NUMBER}")
                     // }
@@ -32,7 +32,7 @@ pipeline {
         stage('Run Angular Build') {
             steps {
                 script {
-                    sh 'Docker run weather-app:${params.IMAGE_VERSION} ng build'
+                    sh 'Docker run weather-app:${IMAGE_VERSION} ng build'
 
                 }
             }
@@ -41,7 +41,7 @@ pipeline {
         stage('Run Angular Test') {
             steps {
                 script {
-                    sh 'Docker run weather-app:${params.IMAGE_VERSION} ng test --watch=false --browsers ChromeHeadless'
+                    sh 'Docker run weather-app:${IMAGE_VERSION} ng test --watch=false --browsers ChromeHeadless'
 
                 }
             }
@@ -50,7 +50,7 @@ pipeline {
         stage('Run Angular E2E') {
             steps {
                 script {
-                    sh 'Docker run weather-app:${params.IMAGE_VERSION} ng e2e'
+                    sh 'Docker run weather-app:${IMAGE_VERSION} ng e2e'
 
                 }
             }
@@ -59,7 +59,7 @@ pipeline {
         stage('Run Angular Lint') {
             steps {
                 script {
-                    sh 'Docker run weather-app:${params.IMAGE_VERSION} ng lint'
+                    sh 'Docker run weather-app:${IMAGE_VERSION} ng lint'
 
                 }
             }
@@ -69,8 +69,8 @@ pipeline {
             steps {
                 script {
                     // Clean up, e.g., stop and remove the Docker container
-                    sh "docker stop weather-app:${params.IMAGE_VERSION}|| true"
-                    sh "docker rm weather-app:${params.IMAGE_VERSION} || true"
+                    sh "docker stop weather-app:${IMAGE_VERSION}|| true"
+                    sh "docker rm weather-app:${IMAGE_VERSION} || true"
                 }
             }
         }
@@ -78,8 +78,8 @@ pipeline {
 
     post {
         success {
-            echo "Pipeline succeeded! Deploying to ${params.BUILD_ENV} environment."
-            sh "Docker run weather-app:${params.IMAGE_VERSION} ng serve  --host=0.0.0.0 --port=4200"
+            echo "Pipeline succeeded! Deploying to ${BUILD_ENV} environment."
+            sh "Docker run weather-app:${IMAGE_VERSION} ng serve  --host=0.0.0.0 --port=4200"
         }
         failure {
             echo 'Pipeline failed!'
