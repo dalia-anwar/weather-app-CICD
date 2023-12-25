@@ -19,10 +19,10 @@ pipeline {
                 script {
                     sh 'echo starts Build'
                     sh 'echo $(whoami)'
-                    sh 'echo ${env.PATH}'
-                    sh ''' env.PATH = "/usr/bin/docker:${env.PATH}" \
+                    sh 'echo ${PATH}'
+                    sh '''export PATH="/usr/bin/docker:${PATH}" \
                     Docker build -t weather-app:${IMAGE_VERSION} . '''
-                    sh 'echo ${env.PATH}'
+                    sh 'echo ${PATH}'
 
                     sh 'echo ends Build'
                 }
