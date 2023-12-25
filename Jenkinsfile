@@ -18,11 +18,12 @@ pipeline {
             steps {
                 script {
                     sh 'echo starts Build'
-                    // Build Docker image
-                    sh 'Docker build -t weather-app:${IMAGE_VERSION} .'
-                    // docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
-                    //     def customImage = docker.build("my-docker-image:${env.BUILD_NUMBER}")
-                    // }
+                    sh 'echo $(whoami)'
+                    sh 'echo ${env.PATH}'
+                    sh ''' env.PATH = "/usr/bin/docker:${env.PATH}" \
+                    Docker build -t weather-app:${IMAGE_VERSION} . '''
+                    sh 'echo ${env.PATH}'
+
                     sh 'echo ends Build'
                 }
             }
