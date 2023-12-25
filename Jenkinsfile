@@ -6,26 +6,24 @@ pipeline {
         string(name: 'IMAGE_VERSION', defaultValue: '1.0', description: 'Specify the application version')
     }
 
-    environment {
-        GitHubToken = credentials('Github-token')
-        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials-id')
-    }
-
     stages {
         stage('Checkout Code') {
             steps {
                 checkout scm
+                sh 'echo Done cloning'
             }
         }
 
         stage('Docker Build Image') {
             steps {
                 script {
+                    sh 'echo starts Build'
                     // Build Docker image
                     sh 'Docker build -t weather-app:${params.IMAGE_VERSION} .'
                     // docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
                     //     def customImage = docker.build("my-docker-image:${env.BUILD_NUMBER}")
                     // }
+                    sh 'echo ends Build'
                 }
             }
         }
@@ -80,7 +78,7 @@ pipeline {
 
     post {
         success {
-            echo "Pipeline succeeded! Deploying to ${env.BUILD_ENV} environment."
+            echo "Pipeline succeeded! Deploying to ${params.BUILD_ENV} environment."
             sh "Docker run weather-app:${params.IMAGE_VERSION} ng serve  --host=0.0.0.0 --port=4200"
         }
         failure {
