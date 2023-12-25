@@ -7,7 +7,7 @@ RUN npm install -g typescript @angular/cli
 COPY . .
 
 # Build the application
-RUN ng build
+# RUN ng build
 
 ## Stage 2: Production stage
 #FROM node:21.5.0-alpine
@@ -22,5 +22,5 @@ RUN ng build
 EXPOSE 4200
 
 # Start the application
-CMD ["ng", "serve"]
+# CMD ["ng", "serve"]
 
