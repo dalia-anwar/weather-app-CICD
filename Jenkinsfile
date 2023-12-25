@@ -14,14 +14,13 @@ pipeline {
             }
         }
 
-        stage('Docker Build Image') {
+        stage('docker Build Image') {
             steps {
                 script {
                     sh 'echo starts Build'
                     sh 'echo $(whoami)'
                     sh 'echo ${PATH}'
-                    sh '''export PATH="/usr/bin/docker:${PATH}" \
-                    Docker build -t weather-app:${IMAGE_VERSION} . '''
+                    sh 'docker build -t weather-app:${IMAGE_VERSION} .'
                     sh 'echo ${PATH}'
 
                     sh 'echo ends Build'
@@ -33,7 +32,7 @@ pipeline {
         stage('Run Angular Build') {
             steps {
                 script {
-                    sh 'Docker run weather-app:${IMAGE_VERSION} ng build'
+                    sh 'docker run weather-app:${IMAGE_VERSION} ng build'
 
                 }
             }
@@ -42,7 +41,7 @@ pipeline {
         stage('Run Angular Test') {
             steps {
                 script {
-                    sh 'Docker run weather-app:${IMAGE_VERSION} ng test --watch=false --browsers ChromeHeadless'
+                    sh 'docker run weather-app:${IMAGE_VERSION} ng test --watch=false --browsers ChromeHeadless'
 
                 }
             }
@@ -51,7 +50,7 @@ pipeline {
         stage('Run Angular E2E') {
             steps {
                 script {
-                    sh 'Docker run weather-app:${IMAGE_VERSION} ng e2e'
+                    sh 'docker run weather-app:${IMAGE_VERSION} ng e2e'
 
                 }
             }
@@ -60,7 +59,7 @@ pipeline {
         stage('Run Angular Lint') {
             steps {
                 script {
-                    sh 'Docker run weather-app:${IMAGE_VERSION} ng lint'
+                    sh 'docker run weather-app:${IMAGE_VERSION} ng lint'
 
                 }
             }
@@ -69,7 +68,7 @@ pipeline {
         stage('Clean Up') {
             steps {
                 script {
-                    // Clean up, e.g., stop and remove the Docker container
+                    // Clean up, e.g., stop and remove the docker container
                     sh "docker stop weather-app:${IMAGE_VERSION}|| true"
                     sh "docker rm weather-app:${IMAGE_VERSION} || true"
                 }
@@ -80,7 +79,7 @@ pipeline {
     post {
         success {
             echo "Pipeline succeeded! Deploying to ${BUILD_ENV} environment."
-            sh "Docker run weather-app:${IMAGE_VERSION} ng serve  --host=0.0.0.0 --port=4200"
+            sh "docker run weather-app:${IMAGE_VERSION} ng serve  --host=0.0.0.0 --port=4200"
         }
         failure {
             echo 'Pipeline failed!'
