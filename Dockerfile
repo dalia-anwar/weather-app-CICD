@@ -13,9 +13,9 @@ COPY . .
 FROM node:21.5.0-alpine
 WORKDIR /app
 # Copy only necessary files from the build stage
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/package*.json ./
+COPY --from=build ./dist ./dist
+COPY --from=build ./node_modules ./node_modules
+COPY --from=build ./package*.json ./
 
 # Expose the necessary port
 EXPOSE 4200
