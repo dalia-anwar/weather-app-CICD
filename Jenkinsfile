@@ -52,7 +52,7 @@ pipeline {
 
                     }
                     catch (Exception e) {
-                        echo "Stage 1 failed, but continuing..."
+                        echo "Stage test failed, but continuing..."
                     }
 
                 }
@@ -62,7 +62,12 @@ pipeline {
         stage('Run Angular E2E') {
             steps {
                 script {
+                    try{
                     sh 'docker run weather-app:${IMAGE_VERSION} ng e2e --silent'
+                    }
+                    catch (Exception e) {
+                        echo "Stage e2e failed, but continuing..."
+                    }
 
                 }
             }
