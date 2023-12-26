@@ -38,16 +38,19 @@ pipeline {
             }
         }
 
+        stage('Run Angular Lint') {
+            steps {
+                script {
+                    sh 'docker run weather-app:${IMAGE_VERSION} ng lint '
+
+                }
+            }
+        }
+        
         stage('Run Angular Test') {
             steps {
                 script {
                     try {
-                        sh '''sudo su root \
-                            echo "export APP_ENV=dev" >> /etc/environment \
-                            echo "export TYPE_SERVER=AWS" >> /etc/environment \
-                            sudo yum update -y amazon-linux-extras \
-                            sudo wget https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-110.0.5481.177-1.x86_64.rpm && yum localinstall -y google-chrome-stable-110.0.5481.177-1.x86_64.rp
-                            '''
                         sh 'docker run weather-app:${IMAGE_VERSION} ng test --watch=false --browsers ChromeHeadless'
 
                     }
@@ -63,7 +66,7 @@ pipeline {
             steps {
                 script {
                     try{
-                    sh 'docker run weather-app:${IMAGE_VERSION} ng e2e --silent'
+                    sh 'docker run weather-app:${IMAGE_VERSION} ng e2e '
                     }
                     catch (Exception e) {
                         echo "Stage e2e failed, but continuing..."
@@ -73,14 +76,7 @@ pipeline {
             }
         }  
 
-        stage('Run Angular Lint') {
-            steps {
-                script {
-                    sh 'docker run weather-app:${IMAGE_VERSION} ng lint --silent'
 
-                }
-            }
-        }
 
         stage('Clean Up') {
             steps {
