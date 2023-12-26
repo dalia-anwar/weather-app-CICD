@@ -46,7 +46,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Run Angular Test') {
             steps {
                 script {
@@ -92,7 +92,7 @@ pipeline {
     post {
         success {
             echo "Pipeline succeeded! Deploying to ${BUILD_ENV} environment."
-            sh "docker run weather-app:${IMAGE_VERSION} ng serve  --host=0.0.0.0 --port=4200"
+            sh "docker run -p 4200:4200 weather-app:${IMAGE_VERSION} ng serve --host 0.0.0.0 --port 4200 --open=false --watch=false"
         }
         failure {
             echo 'Pipeline failed!'
