@@ -62,7 +62,7 @@ pipeline {
         stage('Run Angular E2E') {
             steps {
                 script {
-                    sh 'docker run weather-app:${IMAGE_VERSION} ng e2e'
+                    sh 'docker run weather-app:${IMAGE_VERSION} ng e2e --silent'
 
                 }
             }
@@ -71,7 +71,7 @@ pipeline {
         stage('Run Angular Lint') {
             steps {
                 script {
-                    sh 'docker run weather-app:${IMAGE_VERSION} ng lint'
+                    sh 'docker run weather-app:${IMAGE_VERSION} ng lint --silent'
 
                 }
             }
