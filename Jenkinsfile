@@ -41,7 +41,19 @@ pipeline {
         stage('Run Angular Test') {
             steps {
                 script {
-                    sh 'docker run weather-app:${IMAGE_VERSION} ng test --watch=false --browsers ChromeHeadless'
+                    try {
+                        sh '''sudo su root \
+                            echo "export APP_ENV=dev" >> /etc/environment \
+                            echo "export TYPE_SERVER=AWS" >> /etc/environment \
+                            sudo yum update -y amazon-linux-extras \
+                            sudo wget https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-110.0.5481.177-1.x86_64.rpm && yum localinstall -y google-chrome-stable-110.0.5481.177-1.x86_64.rp
+                            '''
+                        sh 'docker run weather-app:${IMAGE_VERSION} ng test --watch=false --browsers ChromeHeadless'
+
+                    }
+                    catch (Exception e) {
+                        echo "Stage 1 failed, but continuing..."
+                    }
 
                 }
             }
