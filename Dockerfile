@@ -12,10 +12,11 @@ COPY . .
 # Stage 2: Production stage
 FROM node:21.5.0-alpine
 WORKDIR /app
+RUN ls -lha
 # Copy only necessary files from the build stage
-COPY --from=build ./dist ./dist
-COPY --from=build ./node_modules ./node_modules
-COPY --from=build ./package*.json ./
+COPY --from=build dist ./dist
+COPY --from=build node_modules ./node_modules
+COPY --from=build package*.json ./
 
 # Expose the necessary port
 EXPOSE 4200
