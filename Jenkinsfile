@@ -7,22 +7,22 @@ pipeline {
     }
 
 
-    environment {
-        sourceBranch = env.ghprbSourceBranch
-        commitSHA = env.ghprbActualCommit
-        author = env.ghprbPullAuthorLogin
-        prDescription = env.ghprbPullDescription
-    }
+    // environment {
+    //     sourceBranch = env.ghprbSourceBranch
+    //     commitSHA = env.ghprbActualCommit
+    //     author = env.ghprbPullAuthorLogin
+    //     prDescription = env.ghprbPullDescription
+    // }
 
     stages {
         stage('Checkout Code') {
             steps {
                 checkout scm
                 sh 'echo Done cloning'
-                echo "Source Branch: ${sourceBranch}"
-                echo "Commit SHA: ${commitSHA}"
-                echo "Author: ${author}"
-                echo "PR Description: ${prDescription}"
+                // echo "Source Branch: ${sourceBranch}"
+                // echo "Commit SHA: ${commitSHA}"
+                // echo "Author: ${author}"
+                // echo "PR Description: ${prDescription}"
             }
         }
 
