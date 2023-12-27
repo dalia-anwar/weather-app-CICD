@@ -97,7 +97,6 @@ pipeline {
                 }
             }
         }
-    }
 
         stage('Push Image') {
             steps {
@@ -107,7 +106,7 @@ pipeline {
                 }
             }
         }
-    }
+        
         stage('Clean Up') {
             steps {
                 script {
