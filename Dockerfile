@@ -6,6 +6,9 @@ RUN npm cache clean --force \
 RUN npm install -g typescript @angular/cli
 COPY . .
 
+
+FROM node:21.5.0 as main
+COPY --from=build /app /    
 # Expose the necessary port
 EXPOSE 4200
 
