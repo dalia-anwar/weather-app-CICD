@@ -3,7 +3,7 @@ pipeline {
 
     parameters {
         choice(name: 'BUILD_ENV', choices: ['dev', 'prod'], description: 'Select the build environment')
-        string(name: 'IMAGE_VERSION', defaultValue: '1.0', description: 'Specify the application version')
+        string(name: 'IMAGE_VERSION', defaultValue: '1.1', description: 'Specify the application version')
     }
 
 
