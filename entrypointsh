@@ -7,3 +7,4 @@ else
   echo "Pipeline stage is not deploy; skipping command execution."
 fi
 
+#test trigger
