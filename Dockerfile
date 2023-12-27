@@ -7,11 +7,10 @@ RUN npm install -g typescript @angular/cli
 COPY . .
 
 
-FROM node:21.5.0 as main
+FROM node:21.5.0-alpine as main
 COPY --from=build /app /    
 # Expose the necessary port
 EXPOSE 4200
-
 # Start the application
 # CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200"]
 CMD ["entrypoint.sh"]
