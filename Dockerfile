@@ -8,6 +8,7 @@ COPY . .
 
 
 FROM node:21.5.0-alpine as main
+WORKDIR /app
 COPY --from=build /app /    
 # Expose the necessary port
 EXPOSE 4200
