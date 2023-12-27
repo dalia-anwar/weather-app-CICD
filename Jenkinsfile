@@ -1,5 +1,3 @@
-def githubTokenCredentialId = 'github_u_p' // Your GitHub token credential ID
-
 pipeline {
     agent any
 
@@ -106,7 +104,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Clean Up') {
             steps {
                 script {
@@ -126,6 +124,7 @@ pipeline {
                 }
             }
         }
+    }
     post {
         success {
             script {
