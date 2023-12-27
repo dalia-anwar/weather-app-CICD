@@ -78,7 +78,7 @@ pipeline {
             steps {
                 script {
                     try{
-                    sh 'docker run weather-app:${IMAGE_VERSION} ng e2e '
+                    sh 'docker run weather-app:${IMAGE_VERSION} ng e2e --watch=false --browsers ChromeHeadless'
                     }
                     catch (Exception e) {
                         echo "Stage e2e failed, but continuing..."
@@ -141,6 +141,13 @@ pipeline {
                 def sha = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 repo.createStatus(sha, 'FAILURE', description: 'Build or tests failed', context: 'Jenkins')
             }
+        }
+        always {
+            emailext(
+                subject: "Build ${currentBuild.currentResult} : Job ${currentBuild.fullDisplayName}",
+                body: "Build ${currentBuild.currentResult} for Job ${currentBuild.fullDisplayName}",
+                to: 'dalia.anwar112@gmail.com',
+            )
         }
     }
 }

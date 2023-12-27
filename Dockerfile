@@ -6,4 +6,4 @@ RUN npm cache clean --force \
 RUN npm install -g typescript @angular/cli
 COPY . .
 EXPOSE 4200
-CMD ["entrypoint.sh"]
+CMD ["bash","entrypoint.sh"]
