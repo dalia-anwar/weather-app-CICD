@@ -120,28 +120,28 @@ pipeline {
                 script {
                     // change agent to be ECS Fargate
                     // run docker
-                    sh 'docker run weather-app:${IMAGE_VERSION}'
+                    sh 'docker run -p 4200:4200 weather-app:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200'
                 }
             }
         }
     }
     post {
-        success {
-            script {
-                def github = GitHub.connect(credentialsId: 'github_u_p')
-                def repo = github.getRepository('dalia-anwar/weather-app-CICD')
-                def sha = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                repo.createStatus(sha, 'SUCCESS', description: 'Build and tests passed', context: 'Jenkins')
-            }
-        }
-        failure {
-            script {
-                def github = GitHub.connect(credentialsId: 'github_u_p')
-                def repo = github.getRepository('dalia-anwar/weather-app-CICD')
-                def sha = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                repo.createStatus(sha, 'FAILURE', description: 'Build or tests failed', context: 'Jenkins')
-            }
-        }
+        // success {
+        //     script {
+        //         def github = GitHub.connect(credentialsId: 'github_u_p')
+        //         def repo = github.getRepository('dalia-anwar/weather-app-CICD')
+        //         def sha = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+        //         repo.createStatus(sha, 'SUCCESS', description: 'Build and tests passed', context: 'Jenkins')
+        //     }
+        // }
+        // failure {
+        //     script {
+        //         def github = GitHub.connect(credentialsId: 'github_u_p')
+        //         def repo = github.getRepository('dalia-anwar/weather-app-CICD')
+        //         def sha = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+        //         repo.createStatus(sha, 'FAILURE', description: 'Build or tests failed', context: 'Jenkins')
+        //     }
+        // }
         always {
             emailext(
                 subject: "Build ${currentBuild.currentResult} : Job ${currentBuild.fullDisplayName}",
