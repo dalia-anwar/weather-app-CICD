@@ -24,6 +24,7 @@ sudo docker run hello-world
 sudo systemctl enable docker
 docker --version
 sudo usermod -a -G docker $(whoami)
+sudo usermod -a -G docker jenkins
 newgrp docker
 
 ####################################

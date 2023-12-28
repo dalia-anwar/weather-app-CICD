@@ -25,7 +25,7 @@ resource "aws_security_group" "jenkins_workers_sg" {
 // Jenkins workers launch configuration
 resource "aws_launch_configuration" "jenkins_workers_launch_conf" {
   name            = "jenkins_workers_config"
-  image_id        = data.aws_ami.jenkins_worker.id
+  image_id        = "ami-024f768332f080c5e"
   instance_type   = var.jenkins_worker_instance_type
   key_name        = var.key
   iam_instance_profile = aws_iam_instance_profile.jenkins_instance_profile.name
