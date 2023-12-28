@@ -49,12 +49,12 @@ variable "ssl_arn" {
   description = "ACM certificate ARN"
 }
 
-variable "domain_name" {
-  type        = string
-  description = "Route53 domain name"
-}
+# variable "domain_name" {
+#   type        = string
+#   description = "Route53 domain name"
+# }
 
-variable "hosted_zone_id" {
-  type        = string
-  description = "Route53 zone ID"
-}
+# variable "hosted_zone_id" {
+#   type        = string
+#   description = "Route53 zone ID"
+# }
