@@ -1,14 +1,3 @@
-data "aws_ami" "jenkins_master" {
-  most_recent = true
-  owners      = ["self"]
-
-  filter {
-    name   = "name"
-    values = ["jenkins-master"]
-  }
-}
-
-  
 resource "aws_security_group" "jenkins_master_sg" {
   name        = "jenkins_master_sg"
   description = "Allow traffic on port 8080 and enable SSH"
