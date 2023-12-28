@@ -39,7 +39,7 @@ resource "aws_launch_configuration" "jenkins_workers_launch_conf" {
 
   root_block_device {
     volume_type           = "gp2"
-    volume_size           = 10
+    volume_size           = 5
     delete_on_termination = false
   }
 
