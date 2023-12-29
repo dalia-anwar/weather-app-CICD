@@ -60,9 +60,9 @@ resource "aws_security_group" "jenkins_w_sg" {
   }
 }
 
-resource "aws_key_pair" "ec2-key" {
-  public_key = var.key
-}
+# resource "aws_key_pair" "ec2-key" {
+#   public_key = var.key
+# }
 
 resource "aws_eip" "worker_eip" {
   instance = aws_instance.jenkins_worker_ec2.id
