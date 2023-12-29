@@ -93,14 +93,13 @@ resource "aws_instance" "jenkins_master_ec2" {
     delete_on_termination = false
   }
 
-
 # provisioner "local-exec" {
 #     when        = create
 #     on_failure  = continue
 #     command = "echo ${self.public_ip} >> master_ec2-ip.txt ; echo ${aws_eip.master_eip} >> master_ec2-eip.txt"
 #     }
 #     depends_on = [aws_eip.master_eip]
-# }
+}
 
 #EIP
 

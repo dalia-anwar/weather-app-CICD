@@ -92,4 +92,4 @@ resource "aws_instance" "jenkins_worker_ec2" {
 #     command = "echo ${self.public_ip} >> worker_ec2-ip.txt ; echo ${aws_eip_association.jenkins_master_eip.association_id} >> worker_ec2-eip.txt"
 #     }
 #     depends_on = [aws_eip.worker_eip]
-# }
+}
