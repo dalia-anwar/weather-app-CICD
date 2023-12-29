@@ -63,12 +63,17 @@ resource "aws_security_group" "jenkins_w_sg" {
 resource "aws_key_pair" "ec2-key" {
   public_key = var.key
 }
+
+resource "aws_eip" "worker_eip" {
+  instance = aws_instance.jenkins_worker_ec2.id
+  depends_on = [aws_instance.jenkins_worker_ec2]
+}
 # EC2 instance
 resource "aws_instance" "jenkins_worker_ec2" {
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = var.instance_type
   subnet_id                   = var.ec2_subnet_id    
-  security_groups             = [aws_security_group.jenkins_m_sg.id]
+  security_groups             = [aws_security_group.jenkins_w_sg.id]
   associate_public_ip_address = true
   key_name                    = var.key
   tags = {
@@ -86,4 +91,5 @@ provisioner "local-exec" {
     on_failure  = continue
     command = "echo ${self.public_ip} >> worker_ec2-ip.txt ; echo ${aws_eip_association.jenkins_master_eip.association_id} >> worker_ec2-eip.txt"
     }
+    depends_on = [aws_eip.worker_eip]
 }

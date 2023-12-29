@@ -72,6 +72,10 @@ resource "aws_key_pair" "ec2-key" {
   public_key = var.key
 }
 
+resource "aws_eip" "master_eip" {
+  instance = aws_instance.jenkins_master_ec2.id
+  depends_on = [aws_instance.jenkins_master_ec2]
+}
 # EC2 instance
 resource "aws_instance" "jenkins_master_ec2" {
   ami                         = data.aws_ami.amazon_linux.id
@@ -93,16 +97,14 @@ resource "aws_instance" "jenkins_master_ec2" {
 provisioner "local-exec" {
     when        = create
     on_failure  = continue
-    command = "echo ${self.public_ip} >> master_ec2-ip.txt ; echo ${aws_eip_association.jenkins_master_eip.association_id} >> master_ec2-eip.txt"
+    command = "echo ${self.public_ip} >> master_ec2-ip.txt ; echo ${aws_eip.master_eip} >> master_ec2-eip.txt"
     }
+    depends_on = [aws_eip.master_eip]
 }
 
 #EIP
 
-resource "aws_eip" "master_eip" {
-  instance = aws_instance.jenkins_master_ec2.id
-  depends_on = [aws_instance.jenkins_master_ec2]
-}
+
 # resource "aws_eip_association" "jenkins_master_eip" {
 #   instance_id   = aws_instance.jenkins_master_ec2.id
 #   allocation_id = aws_eip.master_eip.id
