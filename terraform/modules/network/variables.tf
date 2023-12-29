@@ -7,11 +7,11 @@ variable "vpc_cidr" {
 variable "subnet1_avail_zone" {
     description = "availability_zone"
     type = string 
-    default = "{eu-central-1a}"
+    default = "eu-central-1a"
 }
 
 variable "subnet2_avail_zone" {
     description = "availability_zone"
     type = string 
-    default = "{eu-central-1b}"
+    default = "eu-central-1b"
 }
