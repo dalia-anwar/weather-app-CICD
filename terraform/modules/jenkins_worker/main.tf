@@ -85,7 +85,6 @@ resource "aws_instance" "jenkins_worker_ec2" {
     delete_on_termination = false
   }
 
-
 # provisioner "local-exec" {
 #     when        = create
 #     on_failure  = continue
