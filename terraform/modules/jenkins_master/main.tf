@@ -103,8 +103,8 @@ resource "aws_eip" "master_eip" {
   instance = aws_instance.jenkins_master_ec2.id
   depends_on = [aws_instance.jenkins_master_ec2]
 }
-resource "aws_eip_association" "jenkins_master_eip" {
-  instance_id   = aws_instance.jenkins_master_ec2.id
-  allocation_id = aws_eip.master_eip.id
-  depends_on = [aws_instance.jenkins_master_ec2, aws_eip.master_eip]
-}
+# resource "aws_eip_association" "jenkins_master_eip" {
+#   instance_id   = aws_instance.jenkins_master_ec2.id
+#   allocation_id = aws_eip.master_eip.id
+#   depends_on = [aws_instance.jenkins_master_ec2, aws_eip.master_eip]
+# }
