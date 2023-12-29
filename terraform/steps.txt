@@ -1,5 +1,3 @@
-export AWS_ACCESS_KEY_ID=AKIA2WUAVUKFZNTRX27E
-export AWS_SECRET_ACCESS_KEY=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
 
 terraform init
 terraform plan
@@ -16,3 +14,26 @@ sudo yum install unzip -y
 sudo yum install -y git
 
 clone git repo
+
+
+edit terraform profile
+provider "aws" {
+  profile  = var.profile
+  region   = var.region
+} or add access_key and secret
+
+  region     = "us-west-2"
+  access_key = "my-access-key"
+  secret_key = "my-secret-key"
+
+
+
+sudo yum install -y git
+sudo yum update -y
+sudo yum install unzip -y
+wget https://releases.hashicorp.com/terraform/1.6.6/terraform_1.6.6_linux_amd64.zip
+unzip terraform_1.6.6_linux_amd64.zip
+sudo mv terraform /usr/local/bin/
+terraform version
+
+
