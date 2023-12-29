@@ -4,3 +4,8 @@ export AWS_SECRET_ACCESS_KEY=your-secret-access-key
 terraform init
 terraform plan
 terraform apply
+
+Console:
+*generate ec2_key*
+--------------------------
+either terraform localy installed or via launcing ec2 instance from aws as terraform server

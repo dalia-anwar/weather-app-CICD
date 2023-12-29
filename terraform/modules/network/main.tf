@@ -9,7 +9,7 @@ resource "aws_vpc" "project_vpc" {
 #EIP
 
 resource "aws_eip" "master_eip" {
-  instance = aws_instance.web.id
+  instance = aws_instance.id
   domain   = "vpc"
 }
 resource "aws_eip_association" "jenkins_master_eip" {
