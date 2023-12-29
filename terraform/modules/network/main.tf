@@ -6,18 +6,6 @@ resource "aws_vpc" "project_vpc" {
   }
 }
 
-#EIP
-
-resource "aws_eip" "master_eip" {
-  instance = aws_instance.id
-  domain   = "vpc"
-}
-resource "aws_eip_association" "jenkins_master_eip" {
-  instance_id   = aws_instance.jenkins_master_ec2.id
-  allocation_id = aws_eip.master_eip.id
-}
-
-
 
 
 resource "aws_subnet" "public_subnet_1" {

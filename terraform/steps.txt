@@ -1,5 +1,5 @@
-export AWS_ACCESS_KEY_ID=your-access-key-id
-export AWS_SECRET_ACCESS_KEY=your-secret-access-key
+export AWS_ACCESS_KEY_ID=AKIA2WUAVUKFZNTRX27E
+export AWS_SECRET_ACCESS_KEY=cOXzyVjAGn+vv17lUrX97yGZZLEGpw1l0OCTDKiJ
 
 terraform init
 terraform plan
@@ -9,3 +9,10 @@ Console:
 *generate ec2_key*
 --------------------------
 either terraform localy installed or via launcing ec2 instance from aws as terraform server
+sudo yum update -y
+
+sudo yum install unzip -y
+
+sudo yum install -y git
+
+clone git repo

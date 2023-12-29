@@ -71,8 +71,9 @@ resource "aws_security_group" "jenkins_m_sg" {
 resource "aws_key_pair" "ec2-key" {
   public_key = var.key
 }
+
 # EC2 instance
-resource "aws_instance" "jenkins_worker_ec2" {
+resource "aws_instance" "jenkins_master_ec2" {
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = var.instance_type
   subnet_id                   = var.ec2_subnet_id    
@@ -94,4 +95,14 @@ provisioner "local-exec" {
     on_failure  = continue
     command = "echo ${self.public_ip} >> master_ec2-ip.txt ; echo ${aws_eip_association.jenkins_master_eip.association_id} >> master_ec2-eip.txt"
     }
+}
+
+#EIP
+
+resource "aws_eip" "master_eip" {
+  instance = aws_instance.jenkins_master_ec2.id
+}
+resource "aws_eip_association" "jenkins_master_eip" {
+  instance_id   = aws_instance.jenkins_master_ec2.id
+  allocation_id = aws_eip.master_eip.id
 }
