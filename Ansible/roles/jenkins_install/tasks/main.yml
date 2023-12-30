@@ -1,0 +1,37 @@
+---
+- name: Update yum
+  yum:
+    name: '*'
+    state: latest
+
+- name: Download Jenkins repository file
+  get_url:
+    url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+
+- name: Import Jenkins GPG key
+  rpm_key:
+    key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+    state: present
+
+- name: Upgrade system packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: Install Java 17 from Amazon Corretto
+  dnf:
+    name: java-17-amazon-corretto
+    state: present
+    enablerepo: amazon-corretto-{{ ansible_distribution_major_version }}
+
+- name: Install Jenkins
+  yum:
+    name: jenkins
+    state: present
+
+- name: Enable and start Jenkins service
+  systemd:
+    name: jenkins
+    enabled: yes
+    state: started

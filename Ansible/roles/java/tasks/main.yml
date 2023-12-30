@@ -1,0 +1,10 @@
+- name: Upgrade system packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: Install Java 17 from Amazon Corretto
+  dnf:
+    name: java-17-amazon-corretto
+    state: present
+    enablerepo: amazon-corretto-{{ ansible_distribution_major_version }}

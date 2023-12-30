@@ -1,0 +1,25 @@
+- name: Set environment variables
+  lineinfile:
+    dest: /etc/environment
+    line: "{{ item }}"
+  loop:
+    - "export APP_ENV=dev"
+    - "export TYPE_SERVER=AWS"
+  become: true
+
+- name: Update system packages
+  yum:
+    name: '*'
+    state: latest
+  become: true
+
+- name: Download and install Google Chrome
+  get_url:
+    url: https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-110.0.5481.177-1.x86_64.rpm
+    dest: /tmp/google-chrome.rpm
+
+- name: Install Google Chrome
+  yum:
+    name: /tmp/google-chrome.rpm
+    state: present
+  become: true
