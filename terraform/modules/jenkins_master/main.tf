@@ -103,11 +103,15 @@ provisioner "local-exec" {
     on_failure  = continue
     command = "echo ${self.public_ip} >> master_ec2-ip.txt"
     }
-    depends_on = [aws_eip.master_eip]
 }
 
 resource "aws_eip" "master_eip" {
   domain = "vpc"
   instance = aws_instance.jenkins_master_ec2.id
+  provisioner "local-exec" {
+    when        = create
+    on_failure  = continue
+    command = "echo ${self.public_ip} >> master_ec2-ip.txt"
+    }
 }
 

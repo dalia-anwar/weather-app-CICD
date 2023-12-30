@@ -87,14 +87,14 @@ resource "aws_instance" "jenkins_worker_ec2" {
     delete_on_termination = false
   }
 
-provisioner "local-exec" {
-    when        = create
-    on_failure  = continue
-    command = "echo ${self.public_ip} >> worker_ec2-ip.txt"
-    }
 }
 
 resource "aws_eip" "worker_eip" {
   domain = "vpc"
-  instance = aws_instance.jenkins_master_ec2.id
+  instance = aws_instance.jenkins_worker_ec2.id
+  provisioner "local-exec" {
+    when        = create
+    on_failure  = continue
+    command = "echo ${self.public_ip} >> worker_ec2-ip.txt"
+    }
 }
