@@ -98,11 +98,6 @@ resource "aws_instance" "jenkins_master_ec2" {
   }
 
 
-provisioner "local-exec" {
-    when        = create
-    on_failure  = continue
-    command = "echo ${self.public_ip} >> master_ec2-ip.txt"
-    }
 }
 
 resource "aws_eip" "master_eip" {

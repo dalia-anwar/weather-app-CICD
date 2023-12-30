@@ -16,7 +16,7 @@ module "jenkins_master" {
 module "jenkins_worker" {
   source            = "./modules/jenkins_worker"
   sg_vpc_id         = module.network.vpc_id
-  ec2_subnet_id     = module.network.public_subnet2_id
+  ec2_subnet_id     = module.network.public_subnet1_id
   key               = "ec2_key"
 
 }
