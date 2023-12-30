@@ -28,6 +28,7 @@ pipeline {
         stage('docker Build Image') {
             steps {
                 script {
+                    sh 'pwd'
                     sh 'echo starts Build'
                     sh 'echo $(whoami)'
                     sh 'echo ${PATH}'
@@ -117,7 +118,6 @@ pipeline {
         stage('Push Image') {
             steps {
                 withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
-                    sh 'cd web-app'
                     sh "cd web-app &&(aws ecr get-login-password --region us-east-1) | docker login -u AWS --password-stdin ${DOCKER_REGISTRY}"
                     sh 'echo Pushing Docker image to $DOCKER_REGISTRY-$BUILD_NUMBER-$commitID'
                     sh 'docker push $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION-$BUILD_NUMBER-$commitID'
