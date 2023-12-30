@@ -20,3 +20,6 @@ module "jenkins_worker" {
   key               = "ec2_key"
 
 }
+module "ecr" {
+  source            = "./modules/ecr"
+}
