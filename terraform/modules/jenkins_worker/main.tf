@@ -64,10 +64,12 @@ resource "aws_security_group" "jenkins_w_sg" {
 #   public_key = var.key
 # }
 
-resource "aws_eip" "worker_eip" {
-  instance = aws_instance.jenkins_worker_ec2.id
-  depends_on = [aws_instance.jenkins_worker_ec2]
-}
+# resource "aws_eip" "worker_eip" {
+#   instance = aws_instance.jenkins_worker_ec2.id
+#   domain   = "vpc"
+#   depends_on = [aws_instance.jenkins_worker_ec2]
+# }
+
 # EC2 instance
 resource "aws_instance" "jenkins_worker_ec2" {
   ami                         = data.aws_ami.amazon_linux.id

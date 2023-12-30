@@ -72,13 +72,28 @@ resource "aws_security_group" "jenkins_m_sg" {
 #   public_key = var.key
 # }
 
-resource "aws_eip" "master_eip" {
-  instance = aws_instance.jenkins_master_ec2.id
-  depends_on = [aws_instance.jenkins_master_ec2]
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = aws_instance.jenkins_master_ec2.id
+  allocation_id = aws_eip.example.id
+}
+
+resource "aws_instance" "web" {
+  ami               = "ami-21f78e11"
+  availability_zone = "us-west-2a"
+  instance_type     = "t2.micro"
+
+  tags = {
+    Name = "HelloWorld"
+  }
+}
+
+resource "aws_eip" "example" {
+  domain = "vpc"
 }
 # EC2 instance
 resource "aws_instance" "jenkins_master_ec2" {
   ami                         = data.aws_ami.amazon_linux.id
+  availability_zone           = var.master_az
   instance_type               = var.instance_type
   subnet_id                   = var.ec2_subnet_id    
   security_groups             = [aws_security_group.jenkins_m_sg.id]

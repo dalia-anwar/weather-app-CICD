@@ -7,7 +7,11 @@ variable "ec2_subnet_id" {
     description = "Subnet ID where instance will be launched"
     type = string
 }
-
+variable "master_az" {
+    description = "master node availability zone"
+    type = string
+  
+}
 
 variable "instance_type" {
   description = "The type of EC2 instance to launch"
