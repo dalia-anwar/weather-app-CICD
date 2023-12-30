@@ -33,7 +33,7 @@ pipeline {
                     sh 'echo starts Build'
                     sh 'echo $(whoami)'
                     sh 'echo ${PATH}'
-                    sh 'cd ./web-app && pwd && docker build -t $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION .'
+                    sh 'cd ./web-app && pwd && docker build -t weather-app:$IMAGE_VERSION .'
                     sh 'echo ${PATH}'
 
                     sh 'echo ends Build'
@@ -45,7 +45,7 @@ pipeline {
         stage('Run Angular Build') {
             steps {
                 script {
-                    sh 'cd web-app && docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng build'
+                    sh 'cd web-app && docker run weather-app:$IMAGE_VERSION ng build'
 
                 }
             }
@@ -54,7 +54,7 @@ pipeline {
         stage('Run Angular Lint') {
             steps {
                 script {
-                    sh 'cd web-app && docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng lint '
+                    sh 'cd web-app && docker run weather-app:$IMAGE_VERSION ng lint '
 
                 }
             }
@@ -64,7 +64,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'cd web-app && docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng test --watch=false --browsers ChromeHeadless'
+                        sh 'cd web-app && docker run weather-app:$IMAGE_VERSION ng test --watch=false --browsers ChromeHeadless'
 
                     }
                     catch (Exception e) {
@@ -79,7 +79,7 @@ pipeline {
             steps {
                 script {
                     try{
-                    sh 'cd web-app && docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng e2e --watch=false --browsers ChromeHeadless'
+                    sh 'cd web-app && docker run weather-app:$IMAGE_VERSION ng e2e --watch=false --browsers ChromeHeadless'
                     }
                     catch (Exception e) {
                         echo "Stage e2e failed, but continuing..."
@@ -92,7 +92,7 @@ pipeline {
         stage('Trivy Scan') {
             steps {
                 script {
-                    sh "cd web-app && trivy image $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION"
+                    sh "cd web-app && trivy image weather-app:$IMAGE_VERSION"
                 }
             }
         }
@@ -101,7 +101,7 @@ pipeline {
         //     steps {
         //         script {
         //             sh "echo Pushing Docker image to ECR"
-        //             sh "docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION"
+        //             sh "docker run weather-app:$IMAGE_VERSION"
         //         }
         //     }
         // }
@@ -110,8 +110,8 @@ pipeline {
             steps {
                 script {
                     // Clean up, e.g., stop and remove the docker container
-                    sh "cd web-app && docker stop $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION|| true"
-                    sh "docker rm $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION || true"
+                    sh "cd web-app && docker stop weather-app:$IMAGE_VERSION|| true"
+                    sh "docker rm weather-app:$IMAGE_VERSION || true"
                 }
             }
         }
@@ -119,9 +119,10 @@ pipeline {
         stage('Push Image') {
             steps {
                 withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
+                    sh 'docker tag weather-app:$IMAGE_VERSION 735783002763.dkr.ecr.eu-central-1.amazonaws.com/weather-app:$IMAGE_VERSION'
                     sh "cd web-app && aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin  $DOCKER_REGISTRY"
                     sh 'echo Pushing Docker image to $DOCKER_REGISTRY-$BUILD_NUMBER-$commitID'
-                    sh 'docker push $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION-$BUILD_NUMBER-$commitID'
+                    sh 'docker push 735783002763.dkr.ecr.eu-central-1.amazonaws.com/weather-app:$IMAGE_VERSION'
                 }
             }
         }
@@ -131,7 +132,7 @@ pipeline {
                     // change agent to be ECS Fargate
                     // run docker
                     sh 'cd web-app'
-                    sh 'docker run -it -p 4200:4200 $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200 > ng-serve.log 2>&1 &'
+                    sh 'docker run -it -p 4200:4200 weather-app:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200 > ng-serve.log 2>&1 &'
                 }
             }
         }
