@@ -29,10 +29,11 @@ pipeline {
             steps {
                 script {
                     sh 'pwd'
+                    sh 'ls '
                     sh 'echo starts Build'
                     sh 'echo $(whoami)'
                     sh 'echo ${PATH}'
-                    sh 'cd web-app && docker build -t $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION .'
+                    sh 'cd ./web-app && pwd && docker build -t $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION .'
                     sh 'echo ${PATH}'
 
                     sh 'echo ends Build'
