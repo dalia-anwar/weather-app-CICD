@@ -4,7 +4,7 @@ pipeline {
     parameters {
         choice(name: 'BUILD_ENV', choices: ['dev', 'prod'], description: 'Select the build environment')
         string(name: 'IMAGE_VERSION', defaultValue: '1.0', description: 'Specify the application version')
-        string(name: 'DOCKER_REGISTRY', defaultValue: '735783002763.dkr.ecr.eu-central-1.amazonaws.com/project_repo', description: 'Docker registry URL')
+        string(name: 'DOCKER_REGISTRY', defaultValue: '735783002763.dkr.ecr.eu-central-1.amazonaws.com', description: 'Docker registry URL')
         booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests during the build')
     }
 
@@ -119,7 +119,7 @@ pipeline {
         stage('Push Image') {
             steps {
                 withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
-                    sh "cd web-app &&(aws ecr get-login-password --region us-east-1) | docker login -u AWS --password-stdin ${DOCKER_REGISTRY}"
+                    sh "cd web-app && aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin  $DOCKER_REGISTRY"
                     sh 'echo Pushing Docker image to $DOCKER_REGISTRY-$BUILD_NUMBER-$commitID'
                     sh 'docker push $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION-$BUILD_NUMBER-$commitID'
                 }
