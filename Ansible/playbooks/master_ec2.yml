@@ -5,3 +5,13 @@
     - git
     - jenkins_install
     - docker
+  tasks:
+    - name: Print File Content
+      shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: file_content_output
+      become: true
+
+    - name: Here is your Jenkins Password
+      debug:
+        var: file_content_output.stdout_lines
+      become: true

@@ -18,8 +18,6 @@
     url: https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-110.0.5481.177-1.x86_64.rpm
     dest: /tmp/google-chrome.rpm
 
-- name: Install Google Chrome
-  yum:
-    name: /tmp/google-chrome.rpm
-    state: present
+- name: Local install Google Chrome
   become: true
+  command: "yum localinstall -y /tmp/google-chrome.rpm"
