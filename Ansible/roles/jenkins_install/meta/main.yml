@@ -1,4 +1,0 @@
----
-dependencies:
-  - name: geerlingguy.docker
-    version: "4.10.0"

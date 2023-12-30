@@ -1,7 +1,7 @@
 - name: install and configure Jenkins on EC2 instance
-  hosts: jenkins-master-ec2
+  hosts: jenkins-master
   become: true
   roles:
     - git
-    - jenkins
+    - jenkins_install
     - docker

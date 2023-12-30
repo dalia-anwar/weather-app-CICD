@@ -12,10 +12,6 @@
     enabled: yes
   become: true
 
-- name: Run Docker hello-world
-  command: docker run hello-world
-  become: true
-
 - name: Add user to docker group
   user:
     name: "{{ ansible_user }}"
