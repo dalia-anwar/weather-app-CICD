@@ -119,8 +119,8 @@ pipeline {
         stage('Push Image') {
             steps {
                 withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
-                    sh 'docker tag weather-app:$IMAGE_VERSION 735783002763.dkr.ecr.eu-central-1.amazonaws.com/weather-app:$IMAGE_VERSION'
-                    sh "cd web-app && aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin  $DOCKER_REGISTRY"
+                    sh 'docker tag weather-app:$IMAGE_VERSION_$commitID 735783002763.dkr.ecr.eu-central-1.amazonaws.com/weather-app:$IMAGE_VERSION_$commitID'
+                    sh "cd web-app && aws ecr get-login-password --region eu-central-1 --profile default | docker login --username AWS --password-stdin  $DOCKER_REGISTRY"
                     sh 'echo Pushing Docker image to $DOCKER_REGISTRY-$BUILD_NUMBER-$commitID'
                     sh 'docker push 735783002763.dkr.ecr.eu-central-1.amazonaws.com/weather-app:$IMAGE_VERSION_$commitID'
                 }
