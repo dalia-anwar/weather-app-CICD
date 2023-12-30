@@ -140,13 +140,11 @@ pipeline {
 
         success {
             emailext body: 'Job Paased',
-                recipientProviders: ['dalia.anwar112@gmail.com'],
                 subject: 'Job Passed',
                 to: 'dalia.anwar112@gmail.com'
         }
         failure {
             emailext body: 'Job failed',
-                recipientProviders: ['dalia.anwar112@gmail.com'],
                 subject: 'Job failed',
                 to: 'dalia.anwar112@gmail.com'
         }
