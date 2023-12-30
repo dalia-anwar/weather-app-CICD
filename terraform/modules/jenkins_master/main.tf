@@ -72,24 +72,13 @@ resource "aws_security_group" "jenkins_m_sg" {
 #   public_key = var.key
 # }
 
-resource "aws_eip_association" "eip_assoc" {
-  instance_id   = aws_instance.jenkins_master_ec2.id
-  allocation_id = aws_eip.example.id
-}
+# resource "aws_eip_association" "eip_assoc" {
+#   instance_id   = aws_instance.jenkins_master_ec2.id
+#   allocation_id = aws_eip.master_eip.id
+# }
 
-resource "aws_instance" "web" {
-  ami               = "ami-21f78e11"
-  availability_zone = "us-west-2a"
-  instance_type     = "t2.micro"
 
-  tags = {
-    Name = "HelloWorld"
-  }
-}
 
-resource "aws_eip" "example" {
-  domain = "vpc"
-}
 # EC2 instance
 resource "aws_instance" "jenkins_master_ec2" {
   ami                         = data.aws_ami.amazon_linux.id
@@ -108,6 +97,7 @@ resource "aws_instance" "jenkins_master_ec2" {
     delete_on_termination = false
   }
 
+
 # provisioner "local-exec" {
 #     when        = create
 #     on_failure  = continue
@@ -116,6 +106,10 @@ resource "aws_instance" "jenkins_master_ec2" {
 #     depends_on = [aws_eip.master_eip]
 }
 
+resource "aws_eip" "master_eip" {
+  domain = "vpc"
+  instance = aws_instance.jenkins_master_ec2.id
+}
 #EIP
 
 
