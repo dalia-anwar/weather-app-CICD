@@ -6,3 +6,4 @@
     - java
     - docker
     - google-chrome
+    - trivy

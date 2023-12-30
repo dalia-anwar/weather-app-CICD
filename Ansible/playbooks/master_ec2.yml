@@ -5,6 +5,8 @@
     - git
     - jenkins_install
     - docker
+    - google-chrome
+    - trivy
   tasks:
     - name: Print File Content
       shell: cat /var/lib/jenkins/secrets/initialAdminPassword
