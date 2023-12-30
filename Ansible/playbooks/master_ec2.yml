@@ -8,6 +8,7 @@
     - google-chrome
     - trivy
     - chromium
+    - aws_configure
   tasks:
     - name: Print File Content
       shell: cat /var/lib/jenkins/secrets/initialAdminPassword
