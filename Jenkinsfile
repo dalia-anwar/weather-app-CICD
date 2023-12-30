@@ -8,12 +8,10 @@ pipeline {
         booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests during the build')
     }
 
-    // environment {
-    //     sourceBranch = env.ghprbSourceBranch
-    //     commitSHA = env.ghprbActualCommit
-    //     author = env.ghprbPullAuthorLogin
-    //     prDescription = env.ghprbPullDescription
-    // }
+    environment {
+
+        AWS_CREDENTIALS_ID = 'aws_key'
+    }
 
     stages {
         stage('Checkout Code') {
@@ -97,14 +95,14 @@ pipeline {
             }
         }
 
-        stage('Push Image') {
-            steps {
-                script {
-                    sh "echo Pushing Docker image to ECR"
-                    sh "docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION"
-                }
-            }
-        }
+        // stage('Push Image') {
+        //     steps {
+        //         script {
+        //             sh "echo Pushing Docker image to ECR"
+        //             sh "docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION"
+        //         }
+        //     }
+        // }
 
         stage('Clean Up') {
             steps {
