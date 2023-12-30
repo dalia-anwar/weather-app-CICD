@@ -120,7 +120,7 @@ pipeline {
                 script {
                     // change agent to be ECS Fargate
                     // run docker
-                    sh 'docker run -p 4200:4200 weather-app:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200'
+                    sh 'docker run -it -p 4200:4200 weather-app:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200 > ng-serve.log 2>&1 &'
                 }
             }
         }
