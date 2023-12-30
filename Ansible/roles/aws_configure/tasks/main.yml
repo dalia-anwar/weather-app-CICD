@@ -1,0 +1,17 @@
+
+- name: Set AWS credentials in ~/.aws/credentials
+  ansible.builtin.lineinfile:
+    path: ~/.aws/credentials
+    line: "{{ item.key }} = {{ item.value }}"
+    create: yes
+  with_dict:
+    aws_access_key_id: "{{ aws_access_key }}"
+    aws_secret_access_key: "{{ aws_secret_key }}"
+  become_user: ubuntu
+
+- name: Set AWS region in ~/.aws/config
+  ansible.builtin.lineinfile:
+    path: ~/.aws/config
+    line: "region = {{ aws_region }}"
+    create: yes
+  become_user: ubuntu
