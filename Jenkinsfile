@@ -3,7 +3,7 @@ pipeline {
 
     parameters {
         choice(name: 'BUILD_ENV', choices: ['dev', 'prod'], description: 'Select the build environment')
-        string(name: 'IMAGE_VERSION', defaultValue: '1.0', description: 'Specify the application version')
+        string(name: 'IMAGE_VERSION', defaultValue: '$GIT_COMMIT', description: 'Specify the application version')
         string(name: 'DOCKER_REGISTRY', defaultValue: '735783002763.dkr.ecr.eu-central-1.amazonaws.com', description: 'Docker registry URL')
         booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests during the build')
     }
