@@ -130,7 +130,8 @@ pipeline {
             catch (Exception e) {
                     echo "Stage push failed, but continuing..."
                 }
-            }}
+                }
+            }
         }
         stage('Deploy') {
             steps {
