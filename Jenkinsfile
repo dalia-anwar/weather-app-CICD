@@ -31,8 +31,7 @@ pipeline {
                     sh 'echo starts Build'
                     sh 'echo $(whoami)'
                     sh 'echo ${PATH}'
-                    sh 'cd web-app'
-                    sh 'docker build -t $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION .'
+                    sh 'cd web-app && docker build -t $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION .'
                     sh 'echo ${PATH}'
 
                     sh 'echo ends Build'
@@ -44,8 +43,7 @@ pipeline {
         stage('Run Angular Build') {
             steps {
                 script {
-                    sh 'cd web-app'
-                    sh 'docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng build'
+                    sh 'cd web-app && docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng build'
 
                 }
             }
@@ -54,8 +52,7 @@ pipeline {
         stage('Run Angular Lint') {
             steps {
                 script {
-                    sh 'cd web-app'
-                    sh 'docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng lint '
+                    sh 'cd web-app && docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng lint '
 
                 }
             }
@@ -65,8 +62,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'cd web-app'
-                        sh 'docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng test --watch=false --browsers ChromeHeadless'
+                        sh 'cd web-app && docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng test --watch=false --browsers ChromeHeadless'
 
                     }
                     catch (Exception e) {
@@ -81,8 +77,7 @@ pipeline {
             steps {
                 script {
                     try{
-                    sh 'cd web-app'
-                    sh 'docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng e2e --watch=false --browsers ChromeHeadless'
+                    sh 'cd web-app && docker run $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION ng e2e --watch=false --browsers ChromeHeadless'
                     }
                     catch (Exception e) {
                         echo "Stage e2e failed, but continuing..."
@@ -95,8 +90,7 @@ pipeline {
         stage('Trivy Scan') {
             steps {
                 script {
-                    sh 'cd web-app'
-                    sh "trivy image $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION"
+                    sh "cd web-app && trivy image $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION"
                 }
             }
         }
@@ -113,9 +107,8 @@ pipeline {
         stage('Clean Up') {
             steps {
                 script {
-                    sh 'cd web-app'
                     // Clean up, e.g., stop and remove the docker container
-                    sh "docker stop $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION|| true"
+                    sh "cd web-app && docker stop $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION|| true"
                     sh "docker rm $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION || true"
                 }
             }
@@ -125,7 +118,7 @@ pipeline {
             steps {
                 withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
                     sh 'cd web-app'
-                    sh "(aws ecr get-login-password --region us-east-1) | docker login -u AWS --password-stdin ${DOCKER_REGISTRY}"
+                    sh "cd web-app &&(aws ecr get-login-password --region us-east-1) | docker login -u AWS --password-stdin ${DOCKER_REGISTRY}"
                     sh 'echo Pushing Docker image to $DOCKER_REGISTRY-$BUILD_NUMBER-$commitID'
                     sh 'docker push $DOCKER_REGISTRY/weather-app:$IMAGE_VERSION-$BUILD_NUMBER-$commitID'
                 }
