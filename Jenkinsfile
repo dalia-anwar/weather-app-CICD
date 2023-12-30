@@ -125,7 +125,7 @@ pipeline {
             }
         }
     }
-    // post {
+    post {
     //     success {
     //         script {
     //             def github = GitHub.connect(credentialsId: 'github_u_p')
