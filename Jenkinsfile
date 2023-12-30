@@ -132,7 +132,7 @@ pipeline {
                     // change agent to be ECS Fargate
                     // run docker
                     sh 'cd web-app'
-                    sh 'docker run -it -p 4200:4200 project_repo:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200 > ng-serve.log 2>&1 &'
+                    sh 'docker run -p 4200:4200 project_repo:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200 > ng-serve.log 2>&1 &'
                 }
             }
         }
