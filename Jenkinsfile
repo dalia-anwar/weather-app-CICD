@@ -100,11 +100,20 @@ pipeline {
             }
         }
 
+
+        
         stage('Upload to S3') {
             steps {
-                withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
-                    // Use AWS CLI to upload 'dist' folder to S3
-                    sh "aws s3 cp dist s3://myappbuscket/weather-app/ --recursive"
+                script {
+                    // Use S3 plugin to upload files to S3
+                    s3Upload(
+                        bucket: 'myappbuscket',
+                        files: 'dist/**/*',
+                        workingDir: './web-app',
+                        path: 'dist/',
+                        region: 'eu-central-1',
+                        credentialsId: 'aws_key'
+                    )
                 }
             }
         }
