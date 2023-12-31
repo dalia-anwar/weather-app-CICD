@@ -105,7 +105,9 @@ pipeline {
         stage('Upload to S3') {
             steps {
                 withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
-                    sh "aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/ --recursive --region eu-central-1"
+                    s3Upload(file:'./web-app/dist/*', bucket:'myappbuscket', path:'dist')
+
+                    // sh "aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/ --recursive --region eu-central-1"
 
                 } 
                 
