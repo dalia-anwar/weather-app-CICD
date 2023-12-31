@@ -104,17 +104,10 @@ pipeline {
         
         stage('Upload to S3') {
             steps {
-                script {
-                    // Use S3 plugin to upload files to S3
-                    s3Upload(
-                        bucket: 'myappbuscket',
-                        files: 'dist/**/*',
-                        workingDir: './web-app',
-                        path: 'dist/',
-                        region: 'eu-central-1',
-                        credentialsId: 'aws_key'
-                    )
-                }
+                withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
+                    s3Upload(file:"'dist/**/*'", bucket:"myappbuscket", path:"myappbuscket_$IMAGE_VERSION/")
+                } 
+                
             }
         }
         stage('Clean Up') {
