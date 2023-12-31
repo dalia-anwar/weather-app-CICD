@@ -103,6 +103,7 @@ pipeline {
 
         
         stage('Upload to S3') {
+            agent {label 'worker_node'}
             steps {
                 script{
             sh 'echo aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/ --recursive --region eu-central-1'
