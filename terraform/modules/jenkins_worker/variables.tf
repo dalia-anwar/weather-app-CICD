@@ -14,7 +14,7 @@ variable "key" {
 }
 variable "instance_type" {
   description = "The type of EC2 instance to launch"
-  default     = "t2.micro"  # Set your default instance type
+  default     = "t3.medium"  # Set your default instance type
 }
 
 variable "jenkins_worker_volume_size" {

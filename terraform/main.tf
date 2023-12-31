@@ -20,6 +20,13 @@ module "jenkins_worker" {
   key               = "ec2_key"
 
 }
+module "deployment_server" {
+  source            = "./modules/deployment_server"
+  sg_vpc_id         = module.network.vpc_id
+  ec2_subnet_id     = module.network.public_subnet1_id
+  key               = "ec2_key"
+}
+
 module "ecr" {
   source            = "./modules/ecr"
 }

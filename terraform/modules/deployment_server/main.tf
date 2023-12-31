@@ -2,7 +2,6 @@
 #SG
 #AWS Instance
 
-
 # EC2 AMI
 data "aws_ami" "amazon_linux" {
   most_recent = true
@@ -25,7 +24,7 @@ data "aws_ami" "amazon_linux" {
 }
 
 # EC2 security group
-resource "aws_security_group" "jenkins_m_sg" {
+resource "aws_security_group" "jenkins_d_sg" {
   vpc_id = var.sg_vpc_id
 
   ingress {
@@ -43,21 +42,13 @@ resource "aws_security_group" "jenkins_m_sg" {
   }
 
   ingress {
-    from_port   = 8080     # open port (8080) for jenkins
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 4200     # open port (8080) for jenkins
+    from_port   = 4200    
     to_port     = 4200
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   ingress {
-    from_port   = 22    # allow ssh to configure instance with ansible
+    from_port   = 22    
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
@@ -71,49 +62,35 @@ resource "aws_security_group" "jenkins_m_sg" {
   }
 
   tags = {
-    Name = "jenkins_master_ec2_sg"
+    Name = "deployment_ec2_sg"
   }
 }
 
-# resource "aws_key_pair" "ec2-key" {
-#   public_key = var.key
-# }
-
-# resource "aws_eip_association" "eip_assoc" {
-#   instance_id   = aws_instance.jenkins_master_ec2.id
-#   allocation_id = aws_eip.master_eip.id
-# }
-
-
-
 # EC2 instance
-resource "aws_instance" "jenkins_master_ec2" {
+resource "aws_instance" "deployment_ec2" {
   ami                         = data.aws_ami.amazon_linux.id
-  availability_zone           = var.master_az
   instance_type               = var.instance_type
   subnet_id                   = var.ec2_subnet_id    
-  security_groups             = [aws_security_group.jenkins_m_sg.id]
+  security_groups             = [aws_security_group.jenkins_w_sg.id]
   associate_public_ip_address = true
   key_name                    = var.key
   tags = {
-      Name = "jenkins_master_EC2"
+      Name = "deployment_ec2"
     } 
   root_block_device {
     volume_type           = "gp3"
-    volume_size           = var.jenkins_master_volume_size
+    volume_size           = var.deployment_volume_size
     delete_on_termination = false
   }
 
-
 }
 
-resource "aws_eip" "master_eip" {
+resource "aws_eip" "deployment_eip" {
   domain = "vpc"
-  instance = aws_instance.jenkins_master_ec2.id
+  instance = aws_instance.deployment_ec2.id
   provisioner "local-exec" {
     when        = create
     on_failure  = continue
-    command = "echo ${self.public_ip} >> master_ec2-ip.txt"
+    command = "echo ${self.public_ip} >> deployment_ec2-ip.txt"
     }
 }
-
