@@ -1,6 +1,5 @@
 pipeline {
-    agent any
-
+    agent none
     parameters {
         string(name: 'DOCKER_REGISTRY', defaultValue: '735783002763.dkr.ecr.eu-central-1.amazonaws.com', description: 'Docker registry URL')
     }
@@ -12,6 +11,7 @@ pipeline {
 
     stages {
         stage('Checkout Code') {
+            agent {label 'worker_node'}
             steps {
                 checkout scm
                 sh 'echo Done cloning'
@@ -23,6 +23,7 @@ pipeline {
         }
 
         stage('docker Build Image') {
+            agent {label 'worker_node'}
             steps {
                 script {
                     sh 'pwd'
@@ -40,6 +41,7 @@ pipeline {
 
 
         stage('Run Angular Build') {
+            agent {label 'worker_node'}
             steps {
                 script {
                     sh 'cd web-app && docker run weather_app:$IMAGE_VERSION ng build'
@@ -49,6 +51,7 @@ pipeline {
         }
 
         stage('Run Angular Lint') {
+            agent {label 'worker_node'}
             steps {
                 script {
                     sh 'cd web-app && docker run weather_app:$IMAGE_VERSION ng lint '
@@ -58,6 +61,7 @@ pipeline {
         }
 
         stage('Run Angular Test') {
+            agent {label 'worker_node'}
             steps {
                 script {
                     try {
@@ -73,6 +77,7 @@ pipeline {
         }
 
         stage('Run Angular E2E') {
+            agent {label 'worker_node'}
             steps {
                 script {
                     try{
@@ -87,6 +92,7 @@ pipeline {
         }  
 
         stage('Trivy Scan') {
+            agent {label 'worker_node'}
             steps {
                 script {
                     sh "cd web-app && trivy image weather_app:$IMAGE_VERSION"
@@ -104,6 +110,7 @@ pipeline {
         // }
 
         stage('Clean Up') {
+            agent {label 'worker_node'}
             steps {
                 script {
                     try{
@@ -121,6 +128,7 @@ pipeline {
         }
 
         stage('Push Image') {
+            agent {label 'worker_node'}
             steps {
             
             withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
@@ -130,12 +138,22 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+        stage('Testing ENV Deploy') {
+            agent {label 'worker_node'}
             steps {
                 script {
                     // change agent to be ECS Fargate
                     // run docker
                     sh 'cd web-app'
+                    sh 'docker run -p 4200:4200 weather_app:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200 > ng-serve.log 2>&1 &'
+                }
+            }
+        stage('Production ENV Deploy') {
+            agent {label 'deployment_node'}
+            steps {
+                script {
+                    sh """ aws ecr get-login-password --region eu-central-1  | docker login --username AWS --password-stdin  $DOCKER_REGISTRY 
+                    docker pull $DOCKER_REGISTRY/weather_app:$IMAGE_VERSION """
                     sh 'docker run -p 4200:4200 weather_app:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200 > ng-serve.log 2>&1 &'
                 }
             }
