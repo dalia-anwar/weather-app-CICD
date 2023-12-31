@@ -152,7 +152,7 @@ pipeline {
         stage('Production ENV Deploy') {
             agent {label 'deployment_node'}
             steps {
-                script {
+                withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
                     sh """ aws ecr get-login-password --region eu-central-1  | docker login --username AWS --password-stdin  $DOCKER_REGISTRY 
                     docker pull $DOCKER_REGISTRY/weather_app:$IMAGE_VERSION """
                     sh 'docker run -p 4200:4200 weather_app:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200 > ng-serve.log 2>&1 &'
