@@ -30,7 +30,7 @@ pipeline {
                     sh 'echo starts Build'
                     sh 'echo $(whoami)'
                     sh 'echo ${PATH}'
-                    sh 'cd ./web-app && pwd && docker build -t project_repo:$IMAGE_VERSION .'
+                    sh 'cd ./web-app && pwd && docker build -t weather_app:$IMAGE_VERSION .'
                     sh 'echo ${PATH}'
 
                     sh 'echo ends Build'
@@ -42,7 +42,7 @@ pipeline {
         stage('Run Angular Build') {
             steps {
                 script {
-                    sh 'cd web-app && docker run project_repo:$IMAGE_VERSION ng build'
+                    sh 'cd web-app && docker run weather_app:$IMAGE_VERSION ng build'
 
                 }
             }
@@ -51,7 +51,7 @@ pipeline {
         stage('Run Angular Lint') {
             steps {
                 script {
-                    sh 'cd web-app && docker run project_repo:$IMAGE_VERSION ng lint '
+                    sh 'cd web-app && docker run weather_app:$IMAGE_VERSION ng lint '
 
                 }
             }
@@ -61,11 +61,11 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'cd web-app && docker run project_repo:$IMAGE_VERSION ng test --watch=false --browsers ChromeHeadless'
+                        sh 'cd web-app && docker run weather_app:$IMAGE_VERSION ng test --watch=false --browsers ChromeHeadless'
 
                     }
                     catch (Exception e) {
-                        echo "Stage test failed, but continuing..."
+                        echo "Stage test failed, but continuing for demp purpose only..."
                     }
 
                 }
@@ -76,10 +76,10 @@ pipeline {
             steps {
                 script {
                     try{
-                    sh 'cd web-app && docker run project_repo:$IMAGE_VERSION ng e2e --watch=false --browsers ChromeHeadless'
+                    sh 'cd web-app && docker run weather_app:$IMAGE_VERSION ng e2e --watch=false --browsers ChromeHeadless'
                     }
                     catch (Exception e) {
-                        echo "Stage e2e failed, but continuing..."
+                        echo "Stage e2e failed, but continuing for demp purpose only..."
                     }
 
                 }
@@ -89,7 +89,7 @@ pipeline {
         stage('Trivy Scan') {
             steps {
                 script {
-                    sh "cd web-app && trivy image project_repo:$IMAGE_VERSION"
+                    sh "cd web-app && trivy image weather_app:$IMAGE_VERSION"
                 }
             }
         }
@@ -98,7 +98,7 @@ pipeline {
         //     steps {
         //         script {
         //             sh "echo Pushing Docker image to ECR"
-        //             sh "docker run project_repo:$IMAGE_VERSION"
+        //             sh "docker run weather_app:$IMAGE_VERSION"
         //         }
         //     }
         // }
@@ -106,10 +106,16 @@ pipeline {
         stage('Clean Up') {
             steps {
                 script {
+                    try{
                     // Clean up, e.g., stop and remove the docker container
-                    sh "cd web-app && docker stop project_repo:$IMAGE_VERSION|| true"
-                    sh "docker rm project_repo:$IMAGE_VERSION || true"
-                    sh 'docker stop $(docker ps -q) && docker rm $(docker ps -aq)'
+                    sh "cd web-app && docker stop weather_app:$IMAGE_VERSION|| true"
+                    sh "docker rm weather_app:$IMAGE_VERSION || true"
+                    sh 'docker stop $(docker ps -q)'
+                    sh 'docker rm $(docker ps -aq)'
+                    }
+                    catch (Exception e) {
+                        echo "Stage test failed, but continuing for demp purpose only..."
+                    }
                 }
             }
         }
@@ -118,9 +124,9 @@ pipeline {
             steps {
             
             withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
-                    sh 'docker tag project_repo:$IMAGE_VERSION $DOCKER_REGISTRY/project_repo:$IMAGE_VERSION'
+                    sh 'docker tag weather_app:$IMAGE_VERSION $DOCKER_REGISTRY/weather_app:$IMAGE_VERSION'
                     sh """ cd web-app && aws ecr get-login-password --region eu-central-1  | docker login --username AWS --password-stdin  $DOCKER_REGISTRY 
-                    docker push $DOCKER_REGISTRY/project_repo:$IMAGE_VERSION """
+                    docker push $DOCKER_REGISTRY/weather_app:$IMAGE_VERSION """
                 }
             }
         }
@@ -131,7 +137,7 @@ pipeline {
                     // run docker
                     sh 'docker stop $(docker ps -q) && docker rm $(docker ps -aq)'
                     sh 'cd web-app'
-                    sh 'docker run -p 4200:4200 project_repo:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200 > ng-serve.log 2>&1 &'
+                    sh 'docker run -p 4200:4200 weather_app:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200 > ng-serve.log 2>&1 &'
                 }
             }
         }
