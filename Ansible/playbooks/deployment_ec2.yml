@@ -1,5 +1,5 @@
 - name: install and configure Jenkins on EC2 instance
-  hosts: worker_server
+  hosts: deployment_server
   become: true
   roles:
     - git

@@ -71,7 +71,7 @@ resource "aws_instance" "deployment_ec2" {
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = var.instance_type
   subnet_id                   = var.ec2_subnet_id    
-  security_groups             = [aws_security_group.jenkins_w_sg.id]
+  security_groups             = [aws_security_group.jenkins_d_sg.id]
   associate_public_ip_address = true
   key_name                    = var.key
   tags = {

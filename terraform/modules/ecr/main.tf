@@ -1,7 +1,7 @@
 # ECR repo
 resource "aws_ecr_repository" "ecr_repo" {
-  name                 = "project_repo"
-  image_tag_mutability = "IMMUTABLE"      # to prevents image tags from being overwritten
+  name                 = "weather_app"
+  # image_tag_mutability = "IMMUTABLE"      # to prevents image tags from being overwritten
   image_scanning_configuration {
     scan_on_push = true
   }
