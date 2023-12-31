@@ -107,7 +107,7 @@ pipeline {
                     sh "aws s3 cp dist s3://myappbuscket/weather-app/ --recursive"
                 }
             }
-
+        }
         stage('Clean Up') {
             agent {label 'worker_node'}
             steps {
@@ -177,7 +177,7 @@ pipeline {
                 }
             }
         }
-    }
+        
     post {
 
         success {
@@ -190,5 +190,7 @@ pipeline {
                 subject: 'Job failed',
                 to: 'dalia.anwar112@gmail.com'
         }
+    }
+    
     }
 }
