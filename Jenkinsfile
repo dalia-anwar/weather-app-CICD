@@ -5,7 +5,7 @@ pipeline {
     }
 
     environment {
-        IMAGE_VERSION =  env.GIT_COMMIT
+        IMAGE_VERSION =  ${GIT_COMMIT}
         AWS_CREDENTIALS_ID = 'aws_key'
     }
 
