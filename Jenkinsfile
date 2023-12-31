@@ -105,9 +105,8 @@ pipeline {
         stage('Upload to S3') {
             steps {
                 
-                    s3Upload(file:'./web-app/dist/*', bucket:'myappbuscket', path:'dist')
 
-                    // sh "aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/ --recursive --region eu-central-1"
+                    sh "aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/ --recursive --region eu-central-1"
 
                 
                 
@@ -185,11 +184,13 @@ pipeline {
     }
     post {
         success {
+            agent {label 'worker_node'}
             emailext body: 'Job Paased',
                 subject: 'Job Passed',
                 to: 'dalia.anwar112@gmail.com'
         }
         failure {
+            agent {label 'worker_node'}
             emailext body: 'Job failed',
                 subject: 'Job failed',
                 to: 'dalia.anwar112@gmail.com'
