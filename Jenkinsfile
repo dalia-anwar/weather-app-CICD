@@ -2,14 +2,11 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'BUILD_ENV', choices: ['dev', 'prod'], description: 'Select the build environment')
-        string(name: 'IMAGE_VERSION', defaultValue: '$GIT_COMMIT', description: 'Specify the application version')
         string(name: 'DOCKER_REGISTRY', defaultValue: '735783002763.dkr.ecr.eu-central-1.amazonaws.com', description: 'Docker registry URL')
-        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests during the build')
     }
 
     environment {
-
+        IMAGE_VERSION = "${GIT_COMMIT}"
         AWS_CREDENTIALS_ID = 'aws_key'
     }
 
@@ -112,6 +109,7 @@ pipeline {
                     // Clean up, e.g., stop and remove the docker container
                     sh "cd web-app && docker stop project_repo:$IMAGE_VERSION|| true"
                     sh "docker rm project_repo:$IMAGE_VERSION || true"
+                    sh 'docker stop $(docker ps -q) && docker rm $(docker ps -aq)'
                 }
             }
         }
@@ -120,9 +118,9 @@ pipeline {
             steps {
             
             withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
-                    sh 'docker tag project_repo:$IMAGE_VERSION 735783002763.dkr.ecr.eu-central-1.amazonaws.com/project_repo:$IMAGE_VERSION'
+                    sh 'docker tag project_repo:$IMAGE_VERSION $DOCKER_REGISTRY/project_repo:$IMAGE_VERSION'
                     sh """ cd web-app && aws ecr get-login-password --region eu-central-1  | docker login --username AWS --password-stdin  $DOCKER_REGISTRY 
-                    docker push 735783002763.dkr.ecr.eu-central-1.amazonaws.com/project_repo:$IMAGE_VERSION """
+                    docker push $DOCKER_REGISTRY/project_repo:$IMAGE_VERSION """
                 }
             }
         }
