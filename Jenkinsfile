@@ -44,7 +44,7 @@ pipeline {
             agent {label 'worker_node'}
             steps {
                 script {
-                    sh 'cd web-app && docker run -v ./dest:./dest -d weather_app:$IMAGE_VERSION ng build'
+                    sh 'cd web-app && docker run -v /var/jenkins/workspace/web-app-CICD/web-app/dist:/app/dist/ weather_app:$IMAGE_VERSION ng build'
 
                 }
             }
