@@ -177,9 +177,8 @@ pipeline {
                 }
             }
         }
-        
+    }
     post {
-
         success {
             emailext body: 'Job Paased',
                 subject: 'Job Passed',
@@ -192,5 +191,5 @@ pipeline {
         }
     }
     
-    }
+    
 }
