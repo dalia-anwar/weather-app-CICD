@@ -149,6 +149,25 @@ pipeline {
                 }
             }
         }
+
+
+        stage('PROD Clean Up') {
+            agent {label 'deployment_node'}
+            steps {
+                script {
+                    try{
+                    // Clean up, e.g., stop and remove the docker container
+                    sh "cd web-app && docker stop weather_app:$IMAGE_VERSION|| true"
+                    sh "docker rm weather_app:$IMAGE_VERSION || true"
+                    sh 'docker stop $(docker ps -q)'
+                    sh 'docker rm $(docker ps -aq)'
+                    }
+                    catch (Exception e) {
+                        echo "Stage test failed, but continuing for demp purpose only..."
+                    }
+                }
+            }
+        }
         stage('Production ENV Deploy') {
             agent {label 'deployment_node'}
             steps {
