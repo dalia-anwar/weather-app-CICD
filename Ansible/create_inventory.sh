@@ -1,9 +1,10 @@
 #!/bin/bash
-
 # Define an array of IP address files
 IP_FILES=(
     "../terraform/master_ec2-ip.txt"
     "../terraform/worker_ec2-ip.txt"
+    "../terraform/deployment_ec2-ip.txt"
+    
     # Add more IP address files as needed
 )
 
@@ -11,6 +12,7 @@ IP_FILES=(
 HOST_GROUPS=(
     "master_server"
     "worker_server"
+    "deployment_server"
     # Add more host group names as needed
 )
 
