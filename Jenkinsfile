@@ -35,7 +35,6 @@ pipeline {
                     sh 'echo ${PATH}'
                     sh 'cd ./web-app && pwd && docker build -t weather_app:$IMAGE_VERSION .'
                     sh 'echo ${PATH}'
-
                     sh 'echo ends Build'
                 }
             }
@@ -108,8 +107,8 @@ pipeline {
             agent {label 'worker_node'}
             steps {
                 script{
-            sh 'echo aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/$BUILD_NUMBER_IMAGE_VERSION --recursive --region eu-central-1'
-            sh "aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/$BUILD_NUMBER_$IMAGE_VERSION --recursive --region eu-central-1"      
+            sh 'echo aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/$BUILD_NUMBER_$IMAGE_VERSION --recursive --region eu-central-1'
+            sh "aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/$BUILD_NUMBER --recursive --region eu-central-1"      
             }
             }
         }
