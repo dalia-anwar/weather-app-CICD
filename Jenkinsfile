@@ -148,6 +148,7 @@ pipeline {
                     sh 'docker run -p 4200:4200 weather_app:$IMAGE_VERSION ng serve --host 0.0.0.0 --port 4200 > ng-serve.log 2>&1 &'
                 }
             }
+        }
         stage('Production ENV Deploy') {
             agent {label 'deployment_node'}
             steps {
