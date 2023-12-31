@@ -5,8 +5,10 @@ pipeline {
     }
 
     environment {
-        IMAGE_VERSION =  "${GIT_COMMIT}"
+        IMAGE_VERSION =  "${env.GIT_COMMIT}"
         AWS_CREDENTIALS_ID = 'aws_key'
+        BUILD_NUMBER = "${env.BUILD_NUMBER}"
+
     }
 
     stages {
@@ -106,8 +108,8 @@ pipeline {
             agent {label 'worker_node'}
             steps {
                 script{
-            sh 'echo aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/ --recursive --region eu-central-1'
-            sh "aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/ --recursive --region eu-central-1"      
+            sh 'echo aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/$BUILD_NUMBER_ $IMAGE_VERSION --recursive --region eu-central-1'
+            sh "aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/$BUILD_NUMBER_$IMAGE_VERSION --recursive --region eu-central-1"      
             }
             }
         }
