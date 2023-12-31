@@ -100,14 +100,13 @@ pipeline {
             }
         }
 
-        // stage('Push Image') {
-        //     steps {
-        //         script {
-        //             sh "echo Pushing Docker image to ECR"
-        //             sh "docker run weather_app:$IMAGE_VERSION"
-        //         }
-        //     }
-        // }
+        stage('Upload to S3') {
+            steps {
+                withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
+                    // Use AWS CLI to upload 'dist' folder to S3
+                    sh "aws s3 cp dist s3://myappbuscket/weather-app/ --recursive"
+                }
+            }
 
         stage('Clean Up') {
             agent {label 'worker_node'}
