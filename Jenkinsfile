@@ -186,16 +186,17 @@ pipeline {
     post {
         success {
             agent {label 'worker_node'}
-            emailext body: 'Job Paased',
-                subject: 'Job Passed',
-                to: 'dalia.anwar112@gmail.com'
+            emailext ( subject: 'Jenkins Pipeline - Build Successful',
+                    body: 'The Jenkins pipeline has completed successfully.',
+                    to: 'dalia.anwar112@gmail.com'
+            )
         }
         failure {
-            agent {label 'worker_node'}
-            emailext body: 'Job failed',
-                subject: 'Job failed',
-                to: 'dalia.anwar112@gmail.com'
-        }
+            emailext( subject: 'Jenkins Pipeline - Build Failed',
+                    body: 'The Jenkins pipeline has failed. Please check the build logs for details.',
+                    to: 'dalia.anwar112@gmail.com'
+            )
+            }
     }
     
     
