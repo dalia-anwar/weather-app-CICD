@@ -5,9 +5,10 @@ pipeline {
     }
 
     environment {
-        IMAGE_VERSION = "${GIT_COMMIT}"
+        // IMAGE_VERSION = "${env.GIT_COMMIT}" 
         AWS_CREDENTIALS_ID = 'aws_key'
         BUILD_NUMBER = "${env.BUILD_ID}"
+        IMAGE_VERSION = "${env.BUILD_ID}"
 
     }
 
