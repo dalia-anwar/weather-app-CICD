@@ -44,7 +44,7 @@ pipeline {
             agent {label 'worker_node'}
             steps {
                 script {
-                    sh 'cd web-app && docker run weather_app:$IMAGE_VERSION ng build'
+                    sh 'cd web-app && docker run -v ./dest:./dest -d weather_app:$IMAGE_VERSION ng build'
 
                 }
             }
@@ -105,8 +105,7 @@ pipeline {
         stage('Upload to S3') {
             steps {
                 withAWS(credentials: "${AWS_CREDENTIALS_ID}"){
-                    sh """ cd web-app && aws ecr get-login-password --region eu-central-1  | docker login --username AWS --password-stdin  $DOCKER_REGISTRY 
-                    docker run weather_app:$IMAGE_VERSION 'aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/ --recursive --region eu-central-1' """
+                    sh "aws s3 cp ./web-app/dist/* s3://myappbuscket/dist/ --recursive --region eu-central-1"
 
                 } 
                 
