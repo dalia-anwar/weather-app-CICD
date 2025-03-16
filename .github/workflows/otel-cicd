@@ -1,0 +1,17 @@
+on:
+  workflow_run:
+    workflows:
+      # The name of the workflow(s) that triggers the export
+      - "test"
+    types: [completed]
+
+jobs:
+  otel-cicd-actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: corentinmusard/otel-cicd-action@v2
+        with:
+          otlpEndpoint: grpc://api.honeycomb.io:443/
+          otlpHeaders: header=test
+          githubToken: ${{ secrets.token }}
+          runId: ${{ github.event.workflow_run.id }}
