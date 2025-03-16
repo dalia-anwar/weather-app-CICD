@@ -33,4 +33,4 @@ jobs:
         with:
           otlpEndpoint: http://35.205.152.8:4318/
           otlpHeaders: header=test
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          githubToken: ${{ secrets.token }}
