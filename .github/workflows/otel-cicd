@@ -2,7 +2,7 @@ on:
   workflow_run:
     workflows:
       # The name of the workflow(s) that triggers the export
-      - "test"
+      - "Test Workflow"
     types: [completed]
 
 jobs:
