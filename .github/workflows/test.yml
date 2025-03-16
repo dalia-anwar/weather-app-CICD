@@ -28,9 +28,9 @@ jobs:
       - name: Echo message 3
         run: echo "This is message 3"
 
-      - name: Export workflow
-        uses: corentinmusard/otel-cicd-action@v2
-        with:
-          otlpEndpoint: http://35.205.152.8:4318/
-          otlpHeaders: header=test
-          githubToken: ${{ secrets.token }}
+      # - name: Export workflow
+      #   uses: corentinmusard/otel-cicd-action@v2
+      #   with:
+      #     otlpEndpoint: http://35.205.152.8:4318/
+      #     otlpHeaders: header=test
+      #     githubToken: ${{ secrets.token }}
