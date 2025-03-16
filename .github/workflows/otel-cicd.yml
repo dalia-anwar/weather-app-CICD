@@ -10,6 +10,6 @@ jobs:
       - uses: corentinmusard/otel-cicd-action@v2
         with:
           otlpEndpoint: http://35.205.152.87:4317/
-          otlpHeaders: header=test
+          otlpHeaders: ""
           githubToken: ${{ secrets.token  }}
           runId: ${{ github.event.workflow_run.id }}
