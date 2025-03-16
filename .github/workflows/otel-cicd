@@ -14,5 +14,5 @@ jobs:
         with:
           otlpEndpoint: grpc://api.honeycomb.io:443/
           otlpHeaders: header=test
-          githubToken: ${{ secrets.token }}
+          githubToken: ${{ secrets.GITHUB_TOKEN  }}
           runId: ${{ github.event.workflow_run.id }}
