@@ -1,8 +1,9 @@
 on:
   workflow_run:
     workflows:
-      # The name of the workflow(s) that triggers the export
       - "Test Workflow"
+      - "test.yml"
+      - "test"
     types: [completed]
 
 jobs:
