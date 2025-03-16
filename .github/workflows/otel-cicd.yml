@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: corentinmusard/otel-cicd-action@v2
         with:
-          otlpEndpoint: grpc://35.205.152.87:4318/
+          otlpEndpoint: grpc://35.205.152.87:4317/
           otlpHeaders: header=test
           githubToken: ${{ secrets.token  }}
           runId: ${{ github.event.workflow_run.id }}
