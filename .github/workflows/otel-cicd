@@ -4,6 +4,7 @@ on:
       - "Test Workflow"
       - "test.yml"
       - "test"
+      - "Test"
     types: [completed]
 
 jobs:
