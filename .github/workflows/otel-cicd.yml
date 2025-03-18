@@ -7,9 +7,16 @@ jobs:
   otel-cicd-actions:
     runs-on: ubuntu-latest
     steps:
-      - uses: corentinmusard/otel-cicd-action@v2
+      # - uses: corentinmusard/otel-cicd-action@v2
+      #   with:
+      #     otlpEndpoint: http://35.205.152.87:4317/
+      #     otlpHeaders: ""
+      #     githubToken: ${{ secrets.token  }}
+      #     runId: ${{ github.event.workflow_run.id }}
+      - name: Export Workflow Trace
+        uses: inception-health/otel-export-trace-action@latest
         with:
           otlpEndpoint: http://35.205.152.87:4317/
           otlpHeaders: ""
-          githubToken: ${{ secrets.token  }}
+          githubToken: ${{ secrets.token }}
           runId: ${{ github.event.workflow_run.id }}
