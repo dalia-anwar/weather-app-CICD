@@ -16,7 +16,7 @@ jobs:
       - name: Export Workflow Trace
         uses: inception-health/otel-export-trace-action@latest
         with:
-          otlpEndpoint: "https://api.honeycomb.io"
-          otlpHeaders: "x-honeycomb-team=VBF9Uue5eJvnwSDLzXjH1B"
+          otlpEndpoint: "https://db-cp2677.apps-dev.valeo.com/lgtm/"
+          otlpHeaders: ""
           githubToken: ${{ secrets.token }}
           runId: ${{ github.event.workflow_run.id }}
