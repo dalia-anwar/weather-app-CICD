@@ -31,6 +31,6 @@ jobs:
       - name: Run otel-action
         uses: ./
         with:
-          ENDPOINT: https://db-cp2677.apps-dev.valeo.com/lgtm/
-          HEADERS: ""
-          SERVICE_NAME: "otel-action"
+          ENDPOINT: https://api.honeycomb.io
+          HEADERS: "x-honeycomb-team=VBF9Uue5eJvnwSDLzXjH1B"
+          SERVICE_NAME: "otel-action-honeycomb"
